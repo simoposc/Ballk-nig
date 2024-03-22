@@ -1,0 +1,31 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote App</title>
+</head>
+<body>
+    <h1>Vote App</h1>
+    <form action="/vote" method="post">
+        <label for="option">Select Option:</label>
+        <select name="option" id="option">
+            {% for option in votes %}
+                <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+        </select><br>
+        <label for="num_votes">Number of Votes:</label>
+        <input type="number" name="num_votes" id="num_votes" value="1" min="1"><br>
+        <input type="submit" value="Vote">
+    </form>
+    <hr>
+    <h2>Current Votes:</h2>
+    <ul>
+        {% for option, count in votes.items() %}
+            <li>{{ option }}: {{ count }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/winner">See Winner</a>
+</body>
+</html>

@@ -26,7 +26,7 @@ else:
 
 @app.route('/')
 def index():
-    return render_template('index.html', votes=votes)
+    return render_template('index real.html', votes=votes)
 
 @app.route('/vote', methods=['POST'])
 def vote():
