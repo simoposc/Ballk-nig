@@ -4,7 +4,6 @@ import os
 
 app = Flask(__name__)
 
-# Dateiname für die CSV-Datei
 CSV_FILE = 'votes.csv'
 
 # Initialisierung der Abstimmungsergebnisse aus der CSV-Datei, falls vorhanden
@@ -24,34 +23,64 @@ else:
         option_name = f"Option {i}"
         votes[option_name] = 0
 
+
+
+
+
 @app.route('/')
 def index():
-    return render_template('index real.html', votes=votes)
+    return render_template('index.html', votes=votes)
+
 
 @app.route('/vote', methods=['POST'])
 def vote():
     option = request.form['option']
-    num_votes = int(request.form['num_votes'])
+    num_votes_str = request.form['num_votes']
     
-    # Aktualisierung der Abstimmungsergebnisse
-    votes[option] += num_votes
-    
-    # Aktualisierung der CSV-Datei
-    with open(CSV_FILE, 'w') as file:
-        writer = csv.writer(file)
-        for option, count in votes.items():
-            writer.writerow([option, count])
+    # Check if num_votes_str is not empty
+    if num_votes_str.strip():
+        try:
+            num_votes = int(num_votes_str)
+        except ValueError:
+            # Handle the case where num_votes_str is not a valid integer
+            return "Invalid number of votes. Please enter a valid number."
+        
+        # Aktualisierung der Abstimmungsergebnisse
+        votes[option] += num_votes
+        
+        # Aktualisierung der CSV-Datei
+        with open(CSV_FILE, 'w') as file:
+            writer = csv.writer(file)
+            for option, count in votes.items():
+                writer.writerow([option, count])
+    else:
+        # Handle the case where num_votes_str is empty
+        return render_template('index.html', votes=votes)
     
     return redirect(url_for('index'))
+
+
 
 @app.route('/winner')
 def winner():
     if not votes:
         return "No votes recorded yet."
     
+    males = {}
+    females = {}
+
+    for key in votes.keys():
+        if key[0] == "5":
+            males[key] = votes[key]
+        elif key[0] == "A":
+            females[key] = votes[key]
+    
     # Finde die Top-3-Optionen mit den meisten Stimmen
-    top_three = sorted(votes, key=votes.get, reverse=True)[:3]
-    return render_template('winner.html', top_three=top_three)
+    top_males = sorted(males, key=males.get, reverse=True)[:5]
+    top_females = sorted(females, key=females.get, reverse=True)[:5]
+    return render_template('winner.html', top_males=top_males, top_females=top_females)
+
 
 if __name__ == '__main__':
+    # Aktualisiere die Abstimmungsergebnisse aus der CSV-Datei für Frauen
     app.run(host='0.0.0.0', port=5000)
