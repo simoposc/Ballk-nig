@@ -3,38 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Abstimmung</title>
     <style>
-        /* Stil für den Accordion */
-        .accordion {
-          max-width: 400px;
-        }
 
-        .accordion .panel {
-          background-color: #f4f4f4;
-          margin-bottom: 5px;
-          border: 1px solid #ddd;
-        }
-
-
-        .accordion .panel-heading {
-          background-color: #ddd;
-          padding: 10px;
-          cursor: pointer;
-        }
-
-        .accordion .panel-heading:hover {
-          background-color: #ccc;
-        }
-
-        .accordion .panel-body {
-          display: none;
-          padding: 10px;
-        }
-
-        .accordion .panel-body.active {
-          display: block;
-        }
+.accordion {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .panel {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+  }
+  
+  .panel-heading {
+    background-color: #f1f1f1;
+    padding: 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+    position: relative;
+  }
+  
+  .panel-body {
+    display: none;
+    padding: 15px;
+  }
+  
+  .panel-body.active {
+    display: block;
+  }
+  
+  .panel-heading::after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: #777;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .panel.active .panel-heading::after {
+    content: '\2796'; /* Unicode character for "minus" sign (-) */
+  }
+  
+  .panel-body input[type="radio"] {
+    margin-right: 10px;
+  }
+  
+  .panel-body input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .panel-body input[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  .panel-body input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    box-sizing: border-box;
+  }
+  
+  .panel-body input[type="number"]:focus {
+    outline: none;
+    border: 1px solid #4CAF50;
+  }
+  
     </style>
 </head>
 <body>
@@ -111,7 +155,7 @@
           </form>
       </div>
     </div>
-    <div class="panelfemale">
+    <div class="panel">
       <div class="panel-heading">5AHWIM Königinen</div>
       <div class="panel-body">
           <form action="/vote_female" method="POST">  <!-- Ändern Sie die Aktion in "/vote_female" -->
